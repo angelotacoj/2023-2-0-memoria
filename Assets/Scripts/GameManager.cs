@@ -15,6 +15,10 @@ public class PokemonCard{
 public class GameManager : MonoBehaviour
 {
     private List<PokemonCard> pokemonCardList;
+    private PokemonCard chosenCard = null;
+    private Card card1;
+    private Card card2;
+
 
     private void Start(){
 
@@ -56,20 +60,32 @@ public class GameManager : MonoBehaviour
 
     }
 
-    
+    public void PlayCard(int position, Card card){
+        if (chosenCard == null){
+            // Significa que aun no se ha elegido cartas
+            // al inicio del turno
+            chosenCard = pokemonCardList[position];
+            card1 = card;
+        }else{
+            // Caso en que ya se tiene una carta abierta
+            // Validar si hay match
 
+            card2 = card;
+            PokemonCard secondCard = pokemonCardList[position];
 
-
-
-    // // Start is called before the first frame update
-    // void Start()
-    // {
-        
-    // }
-
-    // // Update is called once per frame
-    // void Update()
-    // {
-        
-    // }
+            //verificar si hay match
+            if (chosenCard.pokemonName == secondCard.pokemonName){
+                // hay match
+                chosenCard.isShown = true;
+                secondCard.isShown = true;
+            }else{
+                Invoke("CloseCards", 2f);
+            }
+            chosenCard = null;
+        }
+    }
+    public void CloseCards(){
+        card1.CloseCard();
+        card2.CloseCard();
+    }
 }
